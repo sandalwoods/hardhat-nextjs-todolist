@@ -11,3 +11,10 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.js
 ```
+
+```
+yarn hardhat console --network localhost
+const todo = await ethers.getContractFactory("ToDoList")
+const todolist = await todo.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3") //attach to deployed contract
+await todolist.getAllTasks()
+```

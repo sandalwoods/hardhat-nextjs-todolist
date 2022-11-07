@@ -46,6 +46,10 @@ contract ToDoList {
     }
   }
 
+  function getAllTasks() external view returns(Task[] memory) {
+    return tasks;
+  }
+
   fallback() external payable {}
   receive() external payable {}
 }

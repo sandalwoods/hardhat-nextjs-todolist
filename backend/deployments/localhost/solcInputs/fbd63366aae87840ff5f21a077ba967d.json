@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/ToDoList.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.15;\n\ncontract ToDoList {\n  \n  event AddTask(address recipient, uint taskId);\n  event DeleteTask(uint taskId, bool isDeleted);\n\n  struct Task {\n    uint id;\n    string taskText;\n    bool isDeleted;\n  }\n\n  Task[] private tasks;\n  mapping(uint256 => address) taskToOwner;\n\n  function addTask(string memory taskText, bool isDeleted) external {\n    uint taskId = tasks.length;\n    tasks.push(Task(taskId, taskText, isDeleted));\n    taskToOwner[taskId] = msg.sender;\n    emit AddTask(msg.sender, taskId);\n  }\n\n  function getMyTasks() external view returns (Task[] memory) {\n    Task[] memory temporary = new Task[](tasks.length);\n    uint counter = 0;\n    \n    for(uint i=0; i<tasks.length; i++) {\n      if(taskToOwner[i] == msg.sender && tasks[i].isDeleted == false) {\n        temporary[counter] = tasks[i];\n        counter++;\n      }\n    }\n    Task[] memory result = new Task[](counter);\n    for(uint i=0; i<counter; i++) {\n      result[i] = temporary[i];\n    }\n    return result;\n  }\n\n  function deleteTask(uint taskId, bool isDeleted) external {\n    if(taskToOwner[taskId] == msg.sender) {\n      tasks[taskId].isDeleted = isDeleted;\n      emit DeleteTask(taskId, isDeleted);\n    }\n  }\n\n  function getAllTasks() external view returns(Task[] memory) {\n    return tasks;\n  }\n\n  fallback() external payable {}\n  receive() external payable {}\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
