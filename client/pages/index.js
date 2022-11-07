@@ -52,8 +52,8 @@ export default function Home() {
           toDoListABI.abi,
           signer
         );
-        let allTasks = await ToDoListContract.getMyTasks();
-        setTasks(allTasks);
+        let myTasks = await ToDoListContract.getMyTasks();
+        setTasks(myTasks);
       } else {
         console.log("ethereum object does not exist!");
       }
@@ -127,7 +127,7 @@ export default function Home() {
       {!isUserLoggedIn ? (
         <ConnectWalletButton connectWallet={connectWallet} />
       ) : correctNetwork ? (
-        <TodoList {...{ input, setInput, addTask, tasks, deleteTask }} />
+        <TodoList {...{ currentAccount, input, setInput, addTask, tasks, deleteTask }} />
       ) : (
         <WrongNetWorkMessage />
       )}
